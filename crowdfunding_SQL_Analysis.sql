@@ -37,7 +37,7 @@ FROM campaign AS ca
 JOIN contacts AS co
 ON ca.contact_id = co.contact_id
 WHERE ca.outcome = 'live'
-ORDER BY "Remaining Goal Amount" DESC
+ORDER BY "Remaining Goal Amount" DESC;
 
 -- Check the table
 SELECT * FROM email_contacts_remaining_goal_amount;
@@ -46,9 +46,19 @@ SELECT * FROM email_contacts_remaining_goal_amount;
 -- Create a table, "email_backers_remaining_goal_amount" that contains the email address of each backer in descending order, 
 -- and has the first and last name of each backer, the cf_id, company name, description, 
 -- end date of the campaign, and the remaining amount of the campaign goal as "Left of Goal". 
+SELECT * FROM campaign;
+SELECT * FROM contacts;
+SELECT * FROM backers;
 
-
+CREATE TABLE email_backers_remaining_goal_amount
+AS
+SELECT backers.email, backers.first_name, backers.last_name, ca.cf_id, ca.company_name, ca.description, ca.end_date,(goal-pledged) AS "Left of Goal"
+FROM campaign AS ca
+JOIN backers 
+ON ca.cf_id = backers.cf_id
+WHERE ca.outcome = 'live'
+ORDER BY last_name ASC;
 
 -- Check the table
-
+SELECT * FROM email_backers_remaining_goal_amount;
 
